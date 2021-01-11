@@ -1,0 +1,119 @@
+<div *ngIf="videos.length">
+  <h3>Liste des videos</h3>
+  <br>
+  <table class="table table-hover table-sm">
+    <thead class="thead-dark">
+      <tr>
+        <th>Id</th>
+        <th>Titre</th>
+        <th>Genre</th>
+        <th>Description</th>
+        <th>Annee</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let video of videos">
+        <td>
+          <button type="button" class="btn btn-secondary" (click)="setVideoDetails(video)">
+            {{video._id}}
+          </button>
+        </td>
+        <td>{{video.title}}</td>
+        <td>{{video.genre}}</td>
+        <td>{{video.description}}</td>
+        <td>{{video.year}}</td>
+        <td>
+          <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-modal"
+            (click)="prepareDeleteVideo(video)">&times;</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Modal -->
+<div class="modal" id="delete-modal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Supprimer</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Body -->
+      <div class="modal-body">
+        <div *ngIf="deletedVideo">
+          <p [hidden]="returnedMessage">
+            Vous allez supprimer la video {{deletedVideo.title}}
+          </p>
+          <p [hidden]="!returnedMessage">
+            {{returnedMessage}}
+          </p>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+        <button [hidden]="returnedMessage" type="button" class="btn btn-danger" (click)="deleteVideo()">Supprimer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="showVideo">
+  <h3>Mettre a jour la video</h3>
+  <form (ngSubmit)="updateVideo()">
+
+    <!-- ID -->
+    <div class="form-group">
+      <label for="id">Id:</label>
+      <input type="text" class="form-control" id="id" [(ngModel)]="showVideo._id" name="id" disabled required>
+    </div>
+
+    <!-- Titre -->
+    <div class="form-group">
+      <label for="title">Titre:</label>
+      <input type="text" class="form-control" placeholder="Enter title" id="title" [(ngModel)]="showVideo.title"
+        name="title" required>
+    </div>
+
+    <!-- Genre -->
+    <div class="form-group">
+      <label for="genre">Genre:</label>
+      <input type="text" class="form-control" placeholder="Enter genre" id="genre" [(ngModel)]="showVideo.genre"
+        name="genre" required>
+    </div>
+
+    <!-- Description -->
+    <div class="form-group">
+      <label for="description">Description:</label>
+      <input type="text" class="form-control" placeholder="Enter description" id="description"
+        [(ngModel)]="showVideo.description" name="description">
+    </div>
+
+    <!-- Annee -->
+    <div class="form-group">
+      <label for="year">Annee:</label>
+      <input type="number" class="form-control" placeholder="Enter year" id="year" [(ngModel)]="showVideo.year"
+        name="year">
+    </div>
+
+    <button type="submit" class="btn btn-success">Valider</button>
+  </form>
+</div>
+<app-message></app-message>
+
+<script>
+  let pathname = window.location.pathname;
+  if (pathname == "") {
+    $(".nav .nav-item a:first").addClass("active");
+    $(".nav .nav-item a:last").removeClass("active");
+  } else if (pathname == "/videos") {
+    $(".nav .nav-item a:last").addClass("active");
+    $(".nav .nav-item a:first").removeClass("active");
+  }
+  alert("ok");
+</script>

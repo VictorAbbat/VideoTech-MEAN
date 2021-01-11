@@ -1,0 +1,36 @@
+version: "3.8"
+services:
+  mongo:
+    image: mongo
+    ports:
+      - 1702:27017
+    restart: always
+    volumes:
+      - ./mongo:/data/db
+    networks:
+      - mean
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    depends_on:
+      - mongo
+    ports:
+      - 8089:8089
+    networks:
+      - mean
+    environment:
+      - URI=mongodb://mongo/videotecdb
+  client:
+    build:
+      context: ./AngVideoClt
+      dockerfile: Dockerfile
+    depends_on:
+      - mongo
+    ports:
+      - 4200:4200
+    networks:
+      - mean
+
+networks:
+  mean:
